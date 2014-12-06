@@ -77,6 +77,7 @@ auto Window::Update() -> void
 	glfwPollEvents();
 	
 }
+
 auto Window::error_callback(int error, const char* description) -> void
 {
 	fputs(description, stderr);
