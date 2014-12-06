@@ -2,15 +2,16 @@
 #include <Windows.h>
 #include "Utl.h"
 #include "Window.h"
+#include "Input.h"
 
 using std::string;
 
 const string Core::m_className{ "Core" };
 
-Core::Core(Window* window, double frameRate)
+Core::Core(Window& window, double frameRate)
 	: m_isRunning(false)
 	, m_frameTime(1.0 / frameRate)
-	, m_window(window)
+	, m_window(&window)
 {
 	Utl::SetDeltaTime(m_frameTime);
 }
@@ -54,6 +55,7 @@ auto Core::Start() -> void
 
 		while (unprocessedTime > m_frameTime)
 		{
+			Input::Update();
 			render = true;
 			unprocessedTime -= m_frameTime;
 		}

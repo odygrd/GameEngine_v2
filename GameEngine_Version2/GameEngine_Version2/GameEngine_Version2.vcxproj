@@ -67,22 +67,19 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\Rendering\RenderingEngine.cpp" />
+    <ClCompile Include="src\core\Input.cpp" />
+    <ClCompile Include="src\core\Game.cpp" />
     <ClCompile Include="src\core\Core.cpp" />
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\core\Window.cpp" />
     <ClCompile Include="src\core\Utl.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <Library Include="lib\glew32.lib" />
-    <Library Include="lib\glfw3dll.lib" />
-  </ItemGroup>
-  <ItemGroup>
+    <ClInclude Include="src\Rendering\RenderingEngine.h" />
+    <ClInclude Include="src\core\Input.h" />
+    <ClInclude Include="src\core\Game.h" />
     <ClInclude Include="src\core\Core.h" />
-    <ClInclude Include="include\GLFW\glfw3.h" />
-    <ClInclude Include="include\GLFW\glfw3native.h" />
-    <ClInclude Include="include\GL\glew.h" />
-    <ClInclude Include="include\GL\glxew.h" />
-    <ClInclude Include="include\GL\wglew.h" />
     <ClInclude Include="src\core\Window.h" />
     <ClInclude Include="src\core\Utl.h" />
   </ItemGroup>

@@ -15,7 +15,7 @@ auto main() -> int
 	}
 	else
 	{
-		Core engine(&window, FRAME_CAP);
+		Core engine(window, FRAME_CAP);
 		engine.Start();
 	}
 	return 0;

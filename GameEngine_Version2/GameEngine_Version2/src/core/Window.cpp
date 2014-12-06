@@ -1,6 +1,6 @@
 #include "Window.h"
-
 #include "Utl.h"
+#include "Input.h"
 
 using std::string;
 
@@ -22,41 +22,43 @@ Window::Window(int width, int height, const std::string& title)
 		Utl::SendTrace(Utl::WARNING, "Failed to Initialize GLFW", 
 					   ClassName(), methodName);
 	}
-	
-	(SAMPLES > 0) ? glfwWindowHint(GLFW_SAMPLES, SAMPLES) 
-                  : glfwWindowHint(GLFW_SAMPLES, 0);
-	(WINDOW_RESIZABLE) ? glfwWindowHint(GLFW_RESIZABLE, GL_TRUE) 
-			           : glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);
-	
-	if (FULLSCREEN)
-	{
-		m_window = glfwCreateWindow(width, height, title.c_str(), 
-								    glfwGetPrimaryMonitor(), nullptr);
-	}
 	else
 	{
-		m_window = glfwCreateWindow(width, height, title.c_str(), 
-									nullptr, nullptr);
-	}
+		(SAMPLES > 0) ? glfwWindowHint(GLFW_SAMPLES, SAMPLES)
+					  : glfwWindowHint(GLFW_SAMPLES, 0);
 
-	if (!m_window)
-	{
-		m_isOK = false;
-		Utl::SendTrace(Utl::WARNING, "Failed to Initialize Window", 
-					   ClassName(), methodName);	
-	}
+		(WINDOW_RESIZABLE) ? glfwWindowHint(GLFW_RESIZABLE, GL_TRUE)
+						   : glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);
 
-	glfwMakeContextCurrent(m_window);
+		(FULLSCREEN) ? m_window = glfwCreateWindow(width, height, title.c_str(),
+												   glfwGetPrimaryMonitor(), nullptr)
+					 : m_window = glfwCreateWindow(width, height, title.c_str(),
+							        			   nullptr, nullptr);
 
-	glfwSetKeyCallback(m_window, key_callback);
+		if (m_window == nullptr)
+		{
+			m_isOK = false;
+			Utl::SendTrace(Utl::WARNING, "Failed to Initialize Window",
+						   ClassName(), methodName);
+		}
+		else
+		{
+			glfwMakeContextCurrent(m_window);
+			glfwSetKeyCallback(m_window, Input::KeyCallback);
+			glfwSetMouseButtonCallback(m_window, Input::MouseButtonCallback);
+			glfwSetCursorPosCallback(m_window, Input::CursorPosCallback);
+			glfwSetScrollCallback(m_window, Input::CursorScrollCallback);
+			Input::SetWindow(m_window);
 
-	//Initialize GLEW
-	glewExperimental = GL_TRUE;
-	if (glewInit() != GLEW_OK)
-	{
-		m_isOK = false;
-		Utl::SendTrace(Utl::WARNING, "Failed to Initialize GLEW", 
-					   ClassName(), methodName);
+			//Initialize GLEW
+			glewExperimental = GL_TRUE;
+			if (glewInit() != GLEW_OK)
+			{
+				m_isOK = false;
+				Utl::SendTrace(Utl::WARNING, "Failed to Initialize GLEW",
+							ClassName(), methodName);
+			}
+		}
 	}
 }
 
@@ -73,19 +75,10 @@ auto Window::Update() -> void
 		m_closeRequest = true;
 	}
 
-	glfwSwapBuffers(m_window);
-	glfwPollEvents();
-	
+	glfwSwapBuffers(m_window);	
 }
 
 auto Window::error_callback(int error, const char* description) -> void
 {
 	fputs(description, stderr);
-}
-
-auto Window::key_callback(GLFWwindow* window, int key, int scancode, 
-					      int action, int mods) -> void
-{
-	if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS)
-		glfwSetWindowShouldClose(window, GL_TRUE);
 }

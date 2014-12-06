@@ -13,7 +13,7 @@ public:
 
 	auto Update() -> void;
 
-	auto ClassName() const	     -> std::string { return m_className; }
+	auto ClassName() const	     -> const std::string& { return m_className; }
 	auto isOK() const			 -> bool { return m_isOK; }
 	auto GetCloseRequest() const -> bool { return m_closeRequest; }
 	auto GetWidth() const	     -> int { return m_width; }
@@ -21,8 +21,6 @@ public:
 	auto GetTitle()	const	     -> const std::string& { return m_title; }
 	
 	static auto error_callback(int error, const char* description) -> void;
-	static auto key_callback(GLFWwindow* window, int key, 
-							 int scancode, int action, int mods) -> void;
 
 private:
 	int			m_width;
